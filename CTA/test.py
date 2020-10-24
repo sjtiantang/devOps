@@ -1,2 +1,5 @@
-cmd = b"Gi1/0/1"
-print(b'\n' + b"dis int %b"%cmd + b'\n')
+a = dict()
+a = {"name": "Yuchi", "age": 29}
+a.pop("name")
+
+print(a)
