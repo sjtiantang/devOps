@@ -42,6 +42,7 @@ while True:
                     send_email([device_name, interface])
                     penalty_dic[device_interface_name] = True
             elif device_interface_name in penalty_dic:
+                print(device_interface_name + "当前恢复正常，从penalty list中弹出")
                 penalty_dic.pop(device_interface_name)
             else:
                 print(device_interface_name + "正常")
