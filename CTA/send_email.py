@@ -1,3 +1,7 @@
+'''
+email is sent using a third part email address, I haven't tried using our public email "noc@ctamercas.com" yet.
+the impact device and interface is included in the email body therefore engineers will be noted of the detail
+'''
 import smtplib
 from email.header import Header
 from email.mime.text import MIMEText
