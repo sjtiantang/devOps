@@ -18,20 +18,20 @@ while True:
     time_start = datetime.now()
     sleeptime = 0.5
 
-    #devices.json is the list of interfaces in devices that need monitoring, written in JSON format
+    #devices.json is a list of interfaces that need to be monitored, written in JSON format
     with open("devices.json", 'r') as f:
         devices = json.loads(f.read())
 
-    #penalty.json contains a list of interfaces that are already down, and everytime the script runs and
-    #detects an interface down, it will first look into the penalty list, if the down interface is already
-    #in there, the script will not report to NOC by sending email. And when the down interface is recovered,
-    #that interface will be removed from penalty list
+    #penalty.json contains a list of interfaces which are already down. When everytime the script runs and
+    #detects a down interface, it will first look into the penalty list, if the down interface is already
+    #in the penalty list, the script will not send email and report the outage. And when the down interface is recovered,
+    #that interface will be removed from the penalty list
     with open("penalty.json", 'r') as f:
         penalty_dic = json.loads(f.read())
 
     #operation main body, it will run over each interface in devices.json and look for down interfaces.
     #the matching criteria ": DOWN" only match on interfaces that are in down state, but won't match on
-    #administrative down state. When calling the function "send_email", two parameters are passed - device name
+    #interfaces in administrative down state. When calling the function "send_email", two parameters are passed - device name
     #and interface name, therefore engineers will be noted of the detail of the outage
     for device_name, device in devices.items():
         print("Operating {} ...".format(device_name))
@@ -64,7 +64,6 @@ while True:
                 penalty_dic.pop(device_interface_name)
             else:
                 print(device_interface_name + "正常")
-            #print(data[2])
 
     with open("penalty.json", 'w') as f:
         f.write(json.dumps(penalty_dic))
