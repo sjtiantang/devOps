@@ -14,12 +14,13 @@ from auth import username, password
 import json
 from send_email import send_email
 
+sleeptime = 1
+
 while True:
     time_start = datetime.now()
-    sleeptime = 0.5
 
     #devices.json is a list of interfaces that need to be monitored, written in JSON format
-    with open("devices.json", 'r') as f:
+    with open("devices_test.json", 'r') as f:
         devices = json.loads(f.read())
 
     #penalty.json contains a list of interfaces which are already down. When everytime the script runs and
@@ -45,17 +46,18 @@ while True:
 
         for interface in device["INTERFACES"]:
             device_interface_name = device_name + '_' + interface
-            cmd = ("dis int " + interface).encode('utf-8')
+            cmd = ("show int " + interface).encode('utf-8')
             host.write(b"\n" + cmd + b"\n")
             time.sleep(sleeptime)
 
             command_output = host.read_very_eager().decode()
-            while command_output.endswith("---- More ----"):
+            while command_output.endswith("--More-- "):
                 host.write(b' ')
                 time.sleep(sleeptime)
                 command_output += host.read_very_eager().decode()
             data = command_output.split('\r\n')
-            if ": DOWN" in data[2] or ": DOWN" in data[3]:
+            #if ": DOWN" in data[2] or ": DOWN" in data[3]:
+            if "down" in data[2]:
                 if not device_interface_name in penalty_dic:
                     send_email([device_name, interface])
                     penalty_dic[device_interface_name] = True
@@ -69,5 +71,5 @@ while True:
         f.write(json.dumps(penalty_dic))
 
     print("Total runtime: {}".format(datetime.now() - time_start))
-    time.sleep(60)
+    time.sleep(1)
 
