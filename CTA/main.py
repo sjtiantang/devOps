@@ -71,5 +71,6 @@ while True:
         f.write(json.dumps(penalty_dic))
 
     print("Total runtime: {}".format(datetime.now() - time_start))
+    print("\n")
     time.sleep(1)
 
