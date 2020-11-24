@@ -72,5 +72,6 @@ while True:
 
     print("Total runtime: {}".format(datetime.now() - time_start))
     print("\n")
+    host.close()
     time.sleep(1)
 
