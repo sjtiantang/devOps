@@ -14,7 +14,7 @@ from auth import username, password
 import json
 from send_email import send_email
 
-sleeptime = 1
+sleeptime = 2
 
 while True:
     time_start = datetime.now()
@@ -73,5 +73,5 @@ while True:
     print("Total runtime: {}".format(datetime.now() - time_start))
     print("\n")
     host.close()
-    time.sleep(1)
+    time.sleep(30)
 
