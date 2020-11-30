@@ -66,6 +66,7 @@ while True:
                 penalty_dic.pop(device_interface_name)
             else:
                 print(device_interface_name + "正常")
+        host.close()
 
     with open("penalty.json", 'w') as f:
         f.write(json.dumps(penalty_dic))
@@ -73,6 +74,4 @@ while True:
     print("Total runtime: {}".format(datetime.now() - time_start))
     print("\n")
 
-    host.close()
     time.sleep(30)
-
