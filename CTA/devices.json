@@ -1,6 +1,7 @@
 {
 	"HW3.LAX1.CTA": {
 		"IP": "137.96.3.33",
+		"VENDOR": "HUAWEI",
 		"INTERFACES": [
 			"Gi1/0/1",
 			"Gi1/0/5",
@@ -22,6 +23,7 @@
 	},
 	"SW1.TOR1.CTA": {
 		"IP": "137.96.4.250",
+		"VENDOR": "HUAWEI",
 		"INTERFACES": [
 			"Gi2/0/1",
 			"Gi2/0/2",
