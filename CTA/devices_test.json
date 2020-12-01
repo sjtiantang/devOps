@@ -1,0 +1,29 @@
+{
+  "SW2.SEA1.CTA": {
+    "IP": "137.96.4.242",
+    "VENDOR": "HUAWEI",
+    "INTERFACES": [
+      "XGi0/0/1",
+      "XGi0/0/2",
+      "XGi0/0/3",
+      "XGi0/0/8",
+      "XGi0/0/9",
+      "XGi0/0/10",
+      "XGi0/0/48"
+    ]
+  },
+  "GW3.LAX1.DCN": {
+    "IP": "137.96.2.17",
+    "VENDOR": "CISCO",
+    "INTERFACES": [
+      "Loopback0",
+      "Loopback4",
+      "Loopback9",
+      "Gi0/3/0/3",
+      "Gi0/3/0/4",
+      "GigabitEthernet0/3/0/4.219",
+      "GigabitEthernet0/3/0/4.313",
+      "GigabitEthernet0/3/0/4.319"
+    ]
+  }
+}

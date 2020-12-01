@@ -14,17 +14,21 @@ from auth import username, password
 import json
 from send_email import send_email
 
-sleeptime = 0.5
+sleeptime = 2.5
 
 
 class Device:
     def __init__(self, item):
-        self.interfaces = item["INTERFACE"]
+        self.interfaces = item["INTERFACES"]
         self.ip = item["IP"]
         if item["VENDOR"] == "HUAWEI":
             self.show = "dis int"
             self.more = "---- More ----"
             self.match = ": DOWN"
+        elif item["VENDOR"] == "CISCO":
+            self.show = "show int"
+            self.more = "--More-- "
+            self.match = "is down, line protocol is down"
 
 
 def main():
@@ -72,7 +76,10 @@ def main():
                 if device.match in data[2] or device.match in data[3]:
                     if device_interface_name not in penalty_dic:
                         print("检测到：" + device_interface_name + "中断，将发送邮件")
-                        send_email([device_name, interface])
+                        description = ""
+                        for i in range(3, 6):
+                            description = data[i] if "Description" in data[i] else ""
+                        send_email([device_name, interface, "\n" + description])
                         penalty_dic[device_interface_name] = True
                     else:
                         print(device_interface_name + "仍处于中断状态")
@@ -88,7 +95,7 @@ def main():
 
         print("Total runtime: {}".format(datetime.now() - time_start))
         print("\n")
-        time.sleep(60)
+        time.sleep(30)
 
 
 if __name__ == "__main__":
