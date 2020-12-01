@@ -36,7 +36,8 @@ def main():
         time_start = datetime.now()
 
         # devices.json is a list of interfaces that need to be monitored, written in JSON format
-        with open("devices.json", 'r') as f:
+        # with open("devices.json", 'r') as f:
+        with open("devices_test.json", 'r') as f:
             devices = json.loads(f.read())
 
         # penalty.json contains a list of interfaces which are already down. When everytime the script runs and
@@ -48,8 +49,8 @@ def main():
 
         # operation main body, it will run over each interface in devices.json and look for down interfaces.
         # the matching criteria ": DOWN" only match on interfaces that are in down state, but won't match on
-        # interfaces in administrative down state. When calling the function "send_email", two parameters are passed - device name
-        # and interface name, therefore engineers will be noted of the detail of the outage
+        # interfaces in administrative down state. When calling the function "send_email", three parameters are passed - device name,
+        # interface name, and description, therefore engineers will be noted of the detail of the outage
         for device_name in devices.keys():
             device = Device(devices[device_name])
             print("Operating {} ...".format(device_name))
