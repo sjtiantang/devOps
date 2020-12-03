@@ -14,7 +14,7 @@ from auth import username, password
 import json
 from send_email import send_email
 
-sleeptime = 2.5
+sleeptime = 1.5
 
 
 class Device:
@@ -22,11 +22,11 @@ class Device:
         self.interfaces = item["INTERFACES"]
         self.ip = item["IP"]
         if item["VENDOR"] == "HUAWEI":
-            self.show = "dis int"
+            self.show = "dis int "
             self.more = "---- More ----"
             self.match = ": DOWN"
         elif item["VENDOR"] == "CISCO":
-            self.show = "show int"
+            self.show = "show int "
             self.more = "--More-- "
             self.match = "is down, line protocol is down"
 
@@ -96,7 +96,7 @@ def main():
 
         print("Total runtime: {}".format(datetime.now() - time_start))
         print("\n")
-        time.sleep(30)
+        time.sleep(0)
 
 
 if __name__ == "__main__":
