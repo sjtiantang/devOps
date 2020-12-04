@@ -38,7 +38,7 @@ class MAIL_SENDER:
             print(e)
 
 
-def send_email(content: list):
+def send_email(subject, content: list):
     reporter = MAIL_SENDER("CT_notifier@tom.com", "Cta8889+1", "yuchili@ctamericas.com", "smtp.tom.com")
-    msg = reporter.create_mail("ENNI告警邮件!!!!!", content)
+    msg = reporter.create_mail(subject, content)
     reporter.send(msg)

@@ -79,7 +79,7 @@ def main():
                         description = ""
                         for i in range(3, 6):
                             description = data[i] if "Description" in data[i] else ""
-                        send_email([device_name, interface, "\n" + description.lstrip()])
+                        send_email("ENNI告警邮件！！！！！", [device_name, interface, "\n" + description.lstrip()])
                         penalty_dic[device_interface_name] = True
                     else:
                         print(device_interface_name + "仍处于中断状态")
