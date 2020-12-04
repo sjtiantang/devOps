@@ -2,7 +2,6 @@
 the purpose of this script is to monitor the NNI interfaces listed in devices.json, it will utilize the
 telnetlib library to connect to remote devices and send CLI commands like "display interface". No configuration
 commands are send, therefore it is ensured that no network impact will be made by this script
-
 telnetlib: help with connecting to remote device using Telnet, send CLI command to remote device and obtain device output
 auth.py contains the authentication information for log on devices
 send_email is the function for sending emails
