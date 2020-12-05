@@ -16,13 +16,12 @@ class MAIL_SENDER:
         self.smtpserver = smtpserver
         self.smtpport = smtpport
 
-    def create_mail(self, subject, content: list):
+    def create_mail(self, subject, content):
         msg = MIMEMultipart('mixed')
         msg['From'] = self.usermail
         msg['To'] = self.obj_address
         msg['Subject'] = Header(subject, 'utf-8')
-        text = content[0] + ': ' + content[1] + "中断，请尽快查看并处理" + content[2]
-        text_sub = MIMEText(text, 'plain', 'utf-8')
+        text_sub = MIMEText(content, 'plain', 'utf-8')
         msg.attach(text_sub)
         return msg.as_string()
 
@@ -38,7 +37,7 @@ class MAIL_SENDER:
             print(e)
 
 
-def send_email(subject, content: list):
+def send_email(subject, content):
     reporter = MAIL_SENDER("CT_notifier@tom.com", "Cta8889+1", "yuchili@ctamericas.com", "smtp.tom.com")
     msg = reporter.create_mail(subject, content)
     reporter.send(msg)
