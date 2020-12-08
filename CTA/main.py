@@ -23,11 +23,13 @@ class Device:
         if item["VENDOR"] == "HUAWEI":
             self.show = "dis int "
             self.more = "---- More ----"
-            self.match = ": DOWN"
+            self.matchDown = ": DOWN"
+            self.matchUp = "UP"
         elif item["VENDOR"] == "CISCO":
             self.show = "show int "
             self.more = "--More-- "
-            self.match = "is down, line protocol is down"
+            self.matchDown = "is down, line protocol is down"
+            self.matchUp = "up"
 
 
 def main():
@@ -73,7 +75,7 @@ def main():
                     time.sleep(sleeptime)
                     command_output += host.read_very_eager().decode()
                 data = command_output.split('\r\n')
-                if device.match in data[2] or device.match in data[3]:
+                if device.matchDown in data[2] or device.matchDown in data[3]:
                     if device_interface_name not in penalty_dic:
                         print("检测到：" + device_interface_name + "中断，将发送邮件")
                         description = ""
@@ -85,8 +87,11 @@ def main():
                     else:
                         print(device_interface_name + "仍处于中断状态")
                 elif device_interface_name in penalty_dic:
-                    print(device_interface_name + "当前恢复正常，从penalty list中弹出")
-                    penalty_dic.pop(device_interface_name)
+                    if device.matchUp in data[2]:
+                        print(device_interface_name + "当前恢复正常，从penalty list中弹出")
+                        penalty_dic.pop(device_interface_name)
+                        content = device_name + ": " + interface + "恢复正常"
+                        send_email("NNI恢复通知", content)
                 else:
                     print(device_interface_name + "正常")
             host.close()
