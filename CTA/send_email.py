@@ -30,10 +30,10 @@ class MAIL_SENDER:
             sender = smtplib.SMTP(self.smtpserver, self.smtpport)
             sender.login(self.usermail, self.password)
             sender.sendmail(self.usermail, self.obj_address, msg)
-            print("发送成功")
+            print("email sent")
             sender.quit()
         except Exception as e:
-            print("发送失败，错误如下：")
+            print("fail to send email, error as follow: ")
             print(e)
 
 

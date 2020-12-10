@@ -92,23 +92,23 @@ def main():
                 data = command_output.split('\r\n')
                 if device.matchDown in data[1] or device.matchDown in data[2]:
                     if device_interface_name not in penalty_dic:
-                        print("检测到：" + device_interface_name + "中断，将发送邮件")
+                        print("Detect: " + device_interface_name + " down, processing to send email")
                         description = ""
                         for i in range(2, 5):
-                            description = data[i] if "Description" in data[i] else ""
-                        content = device_name + ": " + interface + "中断，请尽快查看并处理" + "\n" + description.lstrip()
-                        send_email("NNI告警邮件！！！！！", content)
+                            description = data[i] if "description" in data[i].lower() else ""
+                        content = device_name + ": " + interface + " down, please process the issue ASAP" + "\n" + description.lstrip()
+                        send_email("NNI DOWN ALERT!!!!!", content)
                         penalty_dic[device_interface_name] = True
                     else:
-                        print(device_interface_name + "仍处于中断状态")
+                        print(device_interface_name + " still in down state")
                 elif device_interface_name in penalty_dic:
                     if device.matchUp in data[2]:
-                        print(device_interface_name + "当前恢复正常，从penalty list中弹出")
+                        print(device_interface_name + " circuit recovered, pop out from penalty list")
                         penalty_dic.pop(device_interface_name)
-                        content = device_name + ": " + interface + "恢复正常"
-                        send_email("NNI恢复通知", content)
+                        content = device_name + ": " + interface + " recovered"
+                        send_email("NNI RECOVER NOTICE", content)
                 else:
-                    print(device_interface_name + "正常")
+                    print(device_interface_name + " normal")
             host.close()
 
         with open("penalty.json", 'w') as f:
