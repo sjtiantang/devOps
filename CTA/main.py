@@ -13,7 +13,7 @@ from auth import username, password
 import json
 from send_email import send_email
 
-sleeptime = 1.5
+sleeptime = 5
 
 
 class Device:
@@ -21,14 +21,29 @@ class Device:
         self.interfaces = item["INTERFACES"]
         self.ip = item["IP"]
         if item["VENDOR"] == "HUAWEI":
+            self.login = b"Username:"
             self.show = "dis int "
             self.more = "---- More ----"
             self.matchDown = ": DOWN"
             self.matchUp = "UP"
         elif item["VENDOR"] == "CISCO":
+            self.login = b"Username:"
             self.show = "show int "
             self.more = "--More-- "
+            # self.matchDown = "down"
             self.matchDown = "is down, line protocol is down"
+            self.matchUp = "up"
+        elif item["VENDOR"] == "JUNIPER":
+            self.login = b"login:"
+            self.show = "show interfaces "
+            self.more = "---(more)---"
+            self.matchDown = "is Down"
+            self.matchUp = "Up"
+        elif item["VENDOR"] == 'ZTE':
+            self.login = b"Username:"
+            self.show = "show interface "
+            self.more = "--More--"
+            self.matchDown = "is down,  line protocol is down"
             self.matchUp = "up"
 
 
@@ -37,8 +52,8 @@ def main():
         time_start = datetime.now()
 
         # devices.json is a list of interfaces that need to be monitored, written in JSON format
-        # with open("devices.json", 'r') as f:
-        with open("devices_test.json", 'r') as f:
+        with open("devices.json", 'r') as f:
+        # with open("devices_test.json", 'r') as f:
             devices = json.loads(f.read())
 
         # penalty.json contains a list of interfaces which are already down. When everytime the script runs and
@@ -56,7 +71,7 @@ def main():
             device = Device(devices[device_name])
             print("Operating {} ...".format(device_name))
             host = telnetlib.Telnet(device.ip)
-            host.read_until(b"Username:")
+            host.read_until(device.login)
             host.write(username + b'\n')
             time.sleep(sleeptime)
             host.write(password + b'\n')
@@ -66,7 +81,7 @@ def main():
             for interface in device.interfaces:
                 device_interface_name = device_name + '_' + interface
                 cmd = (device.show + interface).encode('utf-8')
-                host.write(b"\n" + cmd + b"\n")
+                host.write(cmd + b"\n")
                 time.sleep(sleeptime)
 
                 command_output = host.read_very_eager().decode()
@@ -75,11 +90,11 @@ def main():
                     time.sleep(sleeptime)
                     command_output += host.read_very_eager().decode()
                 data = command_output.split('\r\n')
-                if device.matchDown in data[2] or device.matchDown in data[3]:
+                if device.matchDown in data[1] or device.matchDown in data[2]:
                     if device_interface_name not in penalty_dic:
                         print("检测到：" + device_interface_name + "中断，将发送邮件")
                         description = ""
-                        for i in range(3, 6):
+                        for i in range(2, 5):
                             description = data[i] if "Description" in data[i] else ""
                         content = device_name + ": " + interface + "中断，请尽快查看并处理" + "\n" + description.lstrip()
                         send_email("NNI告警邮件！！！！！", content)
