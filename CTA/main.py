@@ -52,8 +52,8 @@ def main():
         time_start = datetime.now()
 
         # devices.json is a list of interfaces that need to be monitored, written in JSON format
-        with open("devices.json", 'r') as f:
         # with open("devices_test.json", 'r') as f:
+        with open("devices.json", 'r') as f:
             devices = json.loads(f.read())
 
         # penalty.json contains a list of interfaces which are already down. When everytime the script runs and
@@ -96,16 +96,16 @@ def main():
                         description = ""
                         for i in range(2, 5):
                             description = data[i] if "description" in data[i].lower() else ""
-                        content = device_name + ": " + interface + " down, please process the issue ASAP" + "\n" + description.lstrip()
+                        content = device_name + ": " + interface + " is down, please handle the issue ASAP!" + "\n" + description.lstrip()
                         send_email("NNI DOWN ALERT!!!!!", content)
-                        penalty_dic[device_interface_name] = True
+                        penalty_dic[device_interface_name] = datetime.now()
                     else:
                         print(device_interface_name + " still in down state")
                 elif device_interface_name in penalty_dic:
                     if device.matchUp in data[1]:
                         print(device_interface_name + " circuit recovered, pop out from penalty list")
                         penalty_dic.pop(device_interface_name)
-                        content = device_name + ": " + interface + " recovered"
+                        content = device_name + ": " + interface + " recovered\nDown Time: " + penalty_dic[device_interface_name] + "\nRecover Time: {}".format(datetime.now())
                         send_email("NNI RECOVER NOTICE", content)
                 else:
                     print(device_interface_name + " normal")
