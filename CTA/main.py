@@ -13,7 +13,7 @@ from auth import username, password
 import json
 from send_email import send_email
 
-sleeptime = 5
+sleeptime = 2
 
 
 class Device:
@@ -102,7 +102,7 @@ def main():
                     else:
                         print(device_interface_name + " still in down state")
                 elif device_interface_name in penalty_dic:
-                    if device.matchUp in data[2]:
+                    if device.matchUp in data[1]:
                         print(device_interface_name + " circuit recovered, pop out from penalty list")
                         penalty_dic.pop(device_interface_name)
                         content = device_name + ": " + interface + " recovered"
