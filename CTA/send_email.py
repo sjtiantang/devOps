@@ -9,10 +9,11 @@ from email.mime.multipart import MIMEMultipart
 
 
 class MAIL_SENDER:
-    def __init__(self, usermail, password, obj_address, smtpserver, smtpport=25):
+    def __init__(self, usermail, password, obj_address, obj_address_cc, smtpserver, smtpport=25):
         self.usermail = usermail
         self.password = password
         self.obj_address = obj_address
+        self.obj_address_cc = obj_address_cc
         self.smtpserver = smtpserver
         self.smtpport = smtpport
 
@@ -20,6 +21,7 @@ class MAIL_SENDER:
         msg = MIMEMultipart('mixed')
         msg['From'] = self.usermail
         msg['To'] = self.obj_address
+        msg['Cc'] = self.obj_address_cc
         msg['Subject'] = Header(subject, 'utf-8')
         text_sub = MIMEText(content, 'plain', 'utf-8')
         msg.attach(text_sub)
@@ -29,7 +31,7 @@ class MAIL_SENDER:
         try:
             sender = smtplib.SMTP(self.smtpserver, self.smtpport)
             sender.login(self.usermail, self.password)
-            sender.sendmail(self.usermail, self.obj_address, msg)
+            sender.sendmail(self.usermail, self.obj_address.split(',') + self.obj_address_cc.split(','), msg)
             print("Email Sent Successfully")
             sender.quit()
         except Exception as e:
@@ -38,6 +40,6 @@ class MAIL_SENDER:
 
 
 def send_email(subject, content):
-    reporter = MAIL_SENDER("CT_notifier@tom.com", "Cta8889+1", "noc@ctamericas.com", "smtp.tom.com")
+    reporter = MAIL_SENDER("CT_notifier@tom.com", "Cta8889+1", "noc@ctamericas.com", "ipsupport@ctamericas.com", "smtp.tom.com")
     msg = reporter.create_mail(subject, content)
     reporter.send(msg)
