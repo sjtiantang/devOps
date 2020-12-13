@@ -30,8 +30,8 @@ class Device:
             self.login = b"Username:"
             self.show = "show int "
             self.more = "--More-- "
-            # self.matchDown = "down"
-            self.matchDown = "is down, line protocol is down"
+            self.matchDown = "down"
+            # self.matchDown = "is down, line protocol is down"
             self.matchUp = "up"
         elif item["VENDOR"] == "JUNIPER":
             self.login = b"login:"
