@@ -98,14 +98,14 @@ def main():
                             description = data[i] if "description" in data[i].lower() else ""
                         content = device_name + ": " + interface + " is down, please handle the issue ASAP!" + "\n" + description.lstrip()
                         send_email("NNI DOWN ALERT!!!!!", content)
-                        penalty_dic[device_interface_name] = datetime.now()
+                        penalty_dic[device_interface_name] = True
                     else:
                         print(device_interface_name + " still in down state")
                 elif device_interface_name in penalty_dic:
                     if device.matchUp in data[1]:
                         print(device_interface_name + " circuit recovered, pop out from penalty list")
                         penalty_dic.pop(device_interface_name)
-                        content = device_name + ": " + interface + " recovered\nDown Time: " + penalty_dic[device_interface_name] + "\nRecover Time: {}".format(datetime.now())
+                        content = device_name + ": " + interface + " recovered" + "\nRecover Time: {}".format(datetime.now())
                         send_email("NNI RECOVER NOTICE", content)
                 else:
                     print(device_interface_name + " normal")
