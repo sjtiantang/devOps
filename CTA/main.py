@@ -30,8 +30,8 @@ class Device:
             self.login = b"Username:"
             self.show = "show int "
             self.more = "--More-- "
-            self.matchDown = "down"
-            # self.matchDown = "is down, line protocol is down"
+            # self.matchDown = "down"
+            self.matchDown = "is down, line protocol is down"
             self.matchUp = "up"
         elif item["VENDOR"] == "JUNIPER":
             self.login = b"login:"
@@ -52,8 +52,8 @@ def main():
         time_start = datetime.now()
 
         # devices.json is a list of interfaces that need to be monitored, written in JSON format
-        with open("devices_test.json", 'r') as f:
-        # with open("devices.json", 'r') as f:
+        # with open("devices_test.json", 'r') as f:
+        with open("devices.json", 'r') as f:
             devices = json.loads(f.read())
 
         # penalty.json contains a list of interfaces which are already down. When everytime the script runs and
