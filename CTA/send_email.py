@@ -40,6 +40,6 @@ class MAIL_SENDER:
 
 
 def send_email(subject, content):
-    reporter = MAIL_SENDER("CT_notifier@tom.com", "Cta8889+1", "noc@ctamericas.com", "ipsupport@ctamericas.com", "smtp.tom.com")
+    reporter = MAIL_SENDER("CT_notifier@tom.com", "Cta8889+1", "yuchili@ctamericas.com", "", "smtp.tom.com")
     msg = reporter.create_mail(subject, content)
     reporter.send(msg)
