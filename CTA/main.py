@@ -95,7 +95,9 @@ def main():
                         print("Detect: " + device_interface_name + " down, processing to send email")
                         description = ""
                         for i in range(2, 5):
-                            description = data[i] if "description" in data[i].lower() else ""
+                            if "description" in data[i].lower():
+                                description = data[i]
+                                break
                         content = device_name + ": " + interface + " is down, please handle the issue ASAP!" + "\n" + description.lstrip()
                         send_email("NNI DOWN ALERT!!!!!", content)
                         penalty_dic[device_interface_name] = True
