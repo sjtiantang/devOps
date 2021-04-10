@@ -70,7 +70,27 @@ def main():
         for device_name in devices.keys():
             device = Device(devices[device_name])
             print("Operating {} ...".format(device_name))
-            host = telnetlib.Telnet(device.ip)
+
+            if device_name in penalty_dic:
+                try:
+                    host = telnetlib.Telnet(device.ip)
+                    penalty_dic.pop(device_name)
+                except:
+                    print("Device {} still unreachable".format(device_name))
+                    continue
+            else:
+                i = 0
+                while i < 3:
+                    try:
+                        host = telnetlib.Telnet(device.ip)
+                        break
+                    except:
+                        i += 1
+                if i == 3:
+                    penalty_dic[device_name] = True
+                    send_email("Device Unreachable Alert!!!!", "{} unreachable at {}, please investigate!".format(device_name, datetime.now()))
+                    continue
+
             host.read_until(device.login)
             host.write(username + b'\n')
             time.sleep(sleeptime)
